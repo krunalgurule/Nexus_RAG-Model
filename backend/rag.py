@@ -70,7 +70,7 @@ evaluator = None
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="RAG Document Processing API",
+    title="Nexus RAG API",
     description="Process PDFs and URLs using RAG",
     version="1.0.0"
 )

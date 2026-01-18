@@ -20,4 +20,5 @@ pandas
 numpy
 datasets
 rouge-score
-bleurt 
+python-multipart
+pymupdf
