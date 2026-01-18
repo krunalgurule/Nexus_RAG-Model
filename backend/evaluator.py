@@ -1,12 +1,12 @@
 from typing_extensions import Annotated, TypedDict
 from typing import List, Dict, Any, Optional
-from langchain_ollama import ChatOllama
+from langchain_groq import ChatGroq
 from pydantic import BaseModel, Field
 import json
 from loguru import logger
 
-# Initialize Ollama LLM for evaluation
-evaluator_llm = ChatOllama(model="llama3", temperature=0)
+# Initialize Groq LLM for evaluation
+evaluator_llm = ChatGroq(model_name="llama3-70b-8192", temperature=0)
 
 # Grade schemas for structured output
 class CorrectnessGrade(BaseModel):
@@ -98,7 +98,7 @@ class RAGEvaluator:
     """Comprehensive RAG evaluation system using Ollama"""
     
     def __init__(self, model_name: str = "llama3", temperature: float = 0):
-        self.llm = ChatOllama(model=model_name, temperature=temperature)
+        self.llm = ChatGroq(model=model_name, temperature=temperature)
         logger.info(f"Initialized RAG Evaluator with model: {model_name}")
     
     def _parse_structured_output(self, response: str, schema_class) -> Dict:

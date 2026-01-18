@@ -12,11 +12,16 @@ from scrape_agent import scrape_url
 from agent_communication import simple_bus, coordinator
 
 # Langchain and database imports
-from langchain_ollama import OllamaEmbeddings, ChatOllama
+from langchain_groq import ChatGroq
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import chromadb
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 from evaluator import RAGEvaluator
 from typing import List, Optional, Dict, Any
@@ -96,7 +101,8 @@ def initialize_components():
     """Initialize embeddings, Chroma client, LLM, and evaluator"""
     global embeddings, client, collection, embedding_dim, llm, evaluator
     try:
-        embeddings = OllamaEmbeddings(model="mxbai-embed-large")
+        # Initialize Embeddings (HuggingFace - CPU friendly)
+        embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         client = chromadb.PersistentClient(path="chroma_store")
         
         # Test embedding dimensions
@@ -104,14 +110,14 @@ def initialize_components():
         embedding_dim = len(test_single)
         
         # Create or get collection
-        collection_name = f"docs_mxbai_{embedding_dim}d"
+        collection_name = f"docs_hf_{embedding_dim}d"
         collection = client.get_or_create_collection(name=collection_name)
         
-        # Initialize LLM
-        llm = ChatOllama(model="llama3", temperature=0.7)
+        # Initialize LLM (Groq - Cloud friendly)
+        llm = ChatGroq(model="llama3-70b-8192", temperature=0.7)
         
         # Initialize evaluator
-        evaluator = RAGEvaluator(model_name="llama3", temperature=0)
+        evaluator = RAGEvaluator(model_name="llama3-70b-8192", temperature=0)
         
         logger.success("All components initialized successfully!")
         return True
