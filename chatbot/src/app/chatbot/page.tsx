@@ -33,24 +33,23 @@ const EvaluationResults = ({ evaluation }: { evaluation: any }) => (
         Evaluation Results (Overall: {evaluation.overall_score?.toFixed(1)}/5)
       </span>
     </div>
-    
+
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
       {evaluation.correctness && (
         <div className="p-2 bg-white rounded border">
           <div className="flex items-center gap-1 mb-1">
             <span className="font-medium">Correctness:</span>
-            <span className={`px-1 py-0.5 rounded text-xs ${
-              evaluation.correctness.correct 
-                ? 'bg-green-100 text-green-700' 
+            <span className={`px-1 py-0.5 rounded text-xs ${evaluation.correctness.correct
+                ? 'bg-green-100 text-green-700'
                 : 'bg-red-100 text-red-700'
-            }`}>
+              }`}>
               {evaluation.correctness.correct ? 'Correct' : 'Incorrect'}
             </span>
           </div>
           <p className="text-gray-600">{evaluation.correctness.explanation}</p>
         </div>
       )}
-      
+
       {evaluation.relevance && (
         <div className="p-2 bg-white rounded border">
           <div className="flex items-center gap-1 mb-1">
@@ -62,23 +61,22 @@ const EvaluationResults = ({ evaluation }: { evaluation: any }) => (
           <p className="text-gray-600">{evaluation.relevance.explanation}</p>
         </div>
       )}
-      
+
       {evaluation.groundedness && (
         <div className="p-2 bg-white rounded border">
           <div className="flex items-center gap-1 mb-1">
             <span className="font-medium">Groundedness:</span>
-            <span className={`px-1 py-0.5 rounded text-xs ${
-              evaluation.groundedness.grounded 
-                ? 'bg-green-100 text-green-700' 
+            <span className={`px-1 py-0.5 rounded text-xs ${evaluation.groundedness.grounded
+                ? 'bg-green-100 text-green-700'
                 : 'bg-red-100 text-red-700'
-            }`}>
+              }`}>
               {evaluation.groundedness.grounded ? 'Grounded' : 'Not Grounded'}
             </span>
           </div>
           <p className="text-gray-600">{evaluation.groundedness.explanation}</p>
         </div>
       )}
-      
+
       {evaluation.retrieval_relevance && (
         <div className="p-2 bg-white rounded border">
           <div className="flex items-center gap-1 mb-1">
@@ -121,18 +119,19 @@ export default function ChatbotPage() {
 
     try {
       const endpoint = evaluationEnabled ? '/query_with_evaluation' : '/query';
-      const requestBody = evaluationEnabled 
-        ? { 
-            question: userMessage, 
-            n_results: 5,
-            ground_truth: groundTruth.trim() || undefined
-          }
-        : { 
-            question: userMessage, 
-            n_results: 5 
-          };
+      const requestBody = evaluationEnabled
+        ? {
+          question: userMessage,
+          n_results: 5,
+          ground_truth: groundTruth.trim() || undefined
+        }
+        : {
+          question: userMessage,
+          n_results: 5
+        };
 
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -145,11 +144,11 @@ export default function ChatbotPage() {
       }
 
       const data = await response.json();
-      
+
       if (evaluationEnabled && data.query_response) {
         // Handle evaluated response
-        setMessages(prev => [...prev, { 
-          text: data.query_response.answer, 
+        setMessages(prev => [...prev, {
+          text: data.query_response.answer,
           isUser: false,
           evaluation: data.evaluation
         }]);
@@ -158,9 +157,9 @@ export default function ChatbotPage() {
         setMessages(prev => [...prev, { text: data.answer, isUser: false }]);
       }
     } catch (error) {
-      setMessages(prev => [...prev, { 
+      setMessages(prev => [...prev, {
         text: 'Sorry, I encountered an error. Please try again later.',
-        isUser: false 
+        isUser: false
       }]);
     } finally {
       setIsLoading(false);
@@ -185,22 +184,20 @@ export default function ChatbotPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowEvaluationPanel(!showEvaluationPanel)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
-                showEvaluationPanel 
-                  ? 'bg-indigo-100 border-indigo-300 text-indigo-700' 
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${showEvaluationPanel
+                  ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
                   : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
-              }`}
+                }`}
             >
               <Settings className="w-4 h-4" />
               Evaluation
             </button>
             <button
               onClick={() => setEvaluationEnabled(!evaluationEnabled)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
-                evaluationEnabled 
-                  ? 'bg-green-100 border-green-300 text-green-700' 
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${evaluationEnabled
+                  ? 'bg-green-100 border-green-300 text-green-700'
                   : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
-              }`}
+                }`}
             >
               <BarChart3 className="w-4 h-4" />
               {evaluationEnabled ? 'Evaluation ON' : 'Evaluation OFF'}
@@ -219,16 +216,15 @@ export default function ChatbotPage() {
                 </label>
                 <button
                   onClick={() => setEvaluationEnabled(!evaluationEnabled)}
-                  className={`px-4 py-2 rounded-lg border transition-colors ${
-                    evaluationEnabled 
-                      ? 'bg-green-100 border-green-300 text-green-700' 
+                  className={`px-4 py-2 rounded-lg border transition-colors ${evaluationEnabled
+                      ? 'bg-green-100 border-green-300 text-green-700'
                       : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
-                  }`}
+                    }`}
                 >
                   {evaluationEnabled ? 'Enabled' : 'Disabled'}
                 </button>
               </div>
-              
+
               {evaluationEnabled && (
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -246,7 +242,7 @@ export default function ChatbotPage() {
                   </p>
                 </div>
               )}
-              
+
               <div className="text-sm text-slate-600">
                 <p><strong>Evaluation Metrics:</strong></p>
                 <ul className="list-disc list-inside mt-1 space-y-1">
@@ -267,7 +263,7 @@ export default function ChatbotPage() {
               <h2 className="text-2xl font-semibold text-slate-700">
                 What can I help you with?
               </h2>
-              
+
               {/* Centered Input Area (when no messages) */}
               <div className="w-full max-w-4xl">
                 <div className="w-full flex items-center bg-slate-50 rounded-2xl border border-slate-200 p-2 hover:bg-slate-100 transition-colors duration-200">
@@ -296,11 +292,10 @@ export default function ChatbotPage() {
                   className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`p-4 rounded-lg ${
-                      msg.isUser
+                    className={`p-4 rounded-lg ${msg.isUser
                         ? 'max-w-[50%] text-white rounded-br-sm'
                         : 'w-full text-black'
-                    }`}
+                      }`}
                     style={msg.isUser ? { backgroundColor: '#627EEE' } : {}}
                   >
                     {msg.isUser ? (
@@ -356,9 +351,9 @@ export default function ChatbotPage() {
       {/* Character Avatar */}
       <div className="fixed bottom-20 right-8">
         <div className="w-50 h-80 relative">
-          <img 
-            src="/images/luffy.png" 
-            alt="Luffy Character" 
+          <img
+            src="/images/luffy.png"
+            alt="Luffy Character"
             className="w-full h-full object-cover"
           />
         </div>
