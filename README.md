@@ -5,12 +5,12 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB.svg?logo=python&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-15+-000000.svg?logo=next.js&logoColor=white)
-![Ollama](https://img.shields.io/badge/AI-Ollama-000000.svg?logo=ollama&logoColor=white)
+![Groq](https://img.shields.io/badge/AI-Groq-f55036.svg?logo=google-cardboard&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-009688.svg?logo=fastapi&logoColor=white)
 ![ChromaDB](https://img.shields.io/badge/Vector%20DB-ChromaDB-orange)
 
-### **Local. Private. Powerful.**
-**Nexus RAG** is a privacy-focused, modular Retrieval-Augmented Generation system. It connects your local documents and web content with powerful AI models running entirely on your machine.
+### **Fast. Cloud-Ready. Powerful.**
+**Nexus RAG** is a modular Retrieval-Augmented Generation system designed for cloud deployment. It leverages the **Groq API** for lightning-fast inference (Llama 3 70B) and **HuggingFace Embeddings** for CPU-efficient vector search.
 
 [Features](#key-features) • [Tech Stack](#tech-stack) • [Installation](#installation) • [Usage](#usage)
 
@@ -20,10 +20,11 @@
 
 ## 🚀 Key Features
 
-*   **🔒 Privacy-First AI**: Powered by **Ollama**, running open-source models (Llama 3) locally. No data leaves your machine.
+*   **⚡ Blazing Fast AI**: Powered by **Groq API**, utilizing Llama 3 70B for near-instant responses.
+*   **☁️ Cloud Ready**: Optimized for deployment (Render, Railway, Vercel) by removing heavy local dependencies (Ollama).
 *   **📄 Document Ingestion**: Upload PDF documents to create a searchable knowledge base.
 *   **🌐 Web Scraping**: Ingest and analyze content directly from URLs.
-*   **🧠 Vector Search**: Uses **ChromaDB** and **MxBai Embeddings** for semantic search and retrieval.
+*   **🧠 Vector Search**: Uses **ChromaDB** and **HuggingFace Embeddings** (CPU-friendly) for semantic search.
 *   **🤖 Modular Agents**: Architecture built with specialized agents for scraping, document processing, and evaluation.
 *   **📊 RAG Evaluation**: Built-in metrics to assess answer correctness, relevance, and groundedness.
 
@@ -33,7 +34,8 @@
 *   **Python 3.10+** (FastAPI)
 *   **LangChain** (Framework)
 *   **ChromaDB** (Vector Store)
-*   **Ollama** (LLM & Embeddings)
+*   **Groq API** (LLM - Llama 3 70B)
+*   **HuggingFace** (Embeddings)
 *   **PyMuPDF** (PDF Processing)
 *   **Trafilatura** (Web Scraping)
 
@@ -48,28 +50,28 @@
 ## 📦 Installation
 
 ### Prerequisites
-1.  **Ollama**: [Download and Install Ollama](https://ollama.com).
-2.  **Python**: 3.10 or higher.
-3.  **Node.js**: v18 or higher.
+1.  **Python**: 3.10 or higher.
+2.  **Node.js**: v18 or higher.
+3.  **Groq API Key**: Get one for free at [console.groq.com](https://console.groq.com/).
 
-### 1. Setup AI Models
-Open a terminal and pull the required models:
-```powershell
-ollama pull llama3
-ollama pull mxbai-embed-large
-```
+### 1. Backend Setup
+Navigate to the backend directory and set up the environment:
 
-### 2. Backend Setup
-Navigate to the backend directory and install dependencies:
 ```powershell
 cd backend
 python -m venv venv
-.\venv\Scripts\Activate
+.\venv\Scripts\Activate  # Windows
+# source venv/bin/activate  # Mac/Linux
+
 pip install -r requirements.txt
 ```
-*Note: Depending on your setup, you might need to use `python3` instead of `python`.*
 
-### 3. Frontend Setup
+**Create a `.env` file** in the `backend` folder and add your key:
+```env
+GROQ_API_KEY=gsk_your_key_here
+```
+
+### 2. Frontend Setup
 Open a new terminal, navigate to the chatbot directory, and install dependencies:
 ```powershell
 cd chatbot
@@ -111,7 +113,7 @@ nexus-rag/
 │   ├── rag.py              # Main Server Entry Point
 │   ├── document_agent.py   # PDF Processing Logic
 │   ├── scrape_agent.py     # URL Scraping Logic
-│   ├── evaluator.py        # RAG Evaluation Metrics
+│   ├── evaluator.py        # RAG Evaluation Metrics (Groq Powered)
 │   └── chroma_store/       # Vector Database (Local)
 ├── chatbot/                # Next.js Frontend
 │   ├── src/app/            # App Router & Pages
