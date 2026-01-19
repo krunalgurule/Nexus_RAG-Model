@@ -6,7 +6,7 @@ import json
 from loguru import logger
 
 # Initialize Groq LLM for evaluation
-evaluator_llm = ChatGroq(model_name="llama3-70b-8192", temperature=0)
+evaluator_llm = ChatGroq(model_name="llama-3.3-70b-versatile", temperature=0)
 
 # Grade schemas for structured output
 class CorrectnessGrade(BaseModel):

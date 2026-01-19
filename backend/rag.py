@@ -116,10 +116,10 @@ def initialize_components():
         collection = client.get_or_create_collection(name=collection_name)
         
         # Initialize LLM (Groq - Cloud friendly)
-        llm = ChatGroq(model="llama3-70b-8192", temperature=0.7)
+        llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.7)
         
         # Initialize evaluator
-        evaluator = RAGEvaluator(model_name="llama3-70b-8192", temperature=0)
+        evaluator = RAGEvaluator(model_name="llama-3.3-70b-versatile", temperature=0)
         
         logger.success("All components initialized successfully!")
         return True
