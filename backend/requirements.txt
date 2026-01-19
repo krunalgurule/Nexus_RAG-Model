@@ -26,3 +26,4 @@ datasets
 rouge-score
 python-multipart
 pymupdf
+tf-keras

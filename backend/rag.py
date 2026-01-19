@@ -102,7 +102,9 @@ def initialize_components():
     global embeddings, client, collection, embedding_dim, llm, evaluator
     try:
         # Initialize Embeddings (HuggingFace - CPU friendly)
+        logger.info("Loading HuggingFace Embeddings (this may take a while first time)...")
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        logger.info("Embeddings loaded successfully.")
         client = chromadb.PersistentClient(path="chroma_store")
         
         # Test embedding dimensions
