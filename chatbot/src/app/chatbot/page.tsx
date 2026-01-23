@@ -3,17 +3,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, BarChart3, Settings } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import Image from 'next/image';
+
+interface EvaluationMetrics {
+  overall_score: number;
+  correctness?: { correct: boolean; explanation: string };
+  relevance?: { score: number; explanation: string };
+  groundedness?: { grounded: boolean; explanation: string };
+  retrieval_relevance?: { score: number; explanation: string };
+}
 
 interface Message {
   text: string;
   isUser: boolean;
-  evaluation?: {
-    overall_score: number;
-    correctness?: { correct: boolean; explanation: string };
-    relevance?: { score: number; explanation: string };
-    groundedness?: { grounded: boolean; explanation: string };
-    retrieval_relevance?: { score: number; explanation: string };
-  };
+  evaluation?: EvaluationMetrics;
 }
 
 const LoadingDots = () => (
@@ -25,7 +28,7 @@ const LoadingDots = () => (
 );
 
 // Evaluation results component
-const EvaluationResults = ({ evaluation }: { evaluation: any }) => (
+const EvaluationResults = ({ evaluation }: { evaluation: EvaluationMetrics }) => (
   <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
     <div className="flex items-center gap-2 mb-2">
       <BarChart3 className="w-4 h-4 text-indigo-600" />
@@ -40,8 +43,8 @@ const EvaluationResults = ({ evaluation }: { evaluation: any }) => (
           <div className="flex items-center gap-1 mb-1">
             <span className="font-medium">Correctness:</span>
             <span className={`px-1 py-0.5 rounded text-xs ${evaluation.correctness.correct
-                ? 'bg-green-100 text-green-700'
-                : 'bg-red-100 text-red-700'
+              ? 'bg-green-100 text-green-700'
+              : 'bg-red-100 text-red-700'
               }`}>
               {evaluation.correctness.correct ? 'Correct' : 'Incorrect'}
             </span>
@@ -67,8 +70,8 @@ const EvaluationResults = ({ evaluation }: { evaluation: any }) => (
           <div className="flex items-center gap-1 mb-1">
             <span className="font-medium">Groundedness:</span>
             <span className={`px-1 py-0.5 rounded text-xs ${evaluation.groundedness.grounded
-                ? 'bg-green-100 text-green-700'
-                : 'bg-red-100 text-red-700'
+              ? 'bg-green-100 text-green-700'
+              : 'bg-red-100 text-red-700'
               }`}>
               {evaluation.groundedness.grounded ? 'Grounded' : 'Not Grounded'}
             </span>
@@ -156,7 +159,7 @@ export default function ChatbotPage() {
         // Handle regular response
         setMessages(prev => [...prev, { text: data.answer, isUser: false }]);
       }
-    } catch (error) {
+    } catch (_error) {
       setMessages(prev => [...prev, {
         text: 'Sorry, I encountered an error. Please try again later.',
         isUser: false
@@ -185,8 +188,8 @@ export default function ChatbotPage() {
             <button
               onClick={() => setShowEvaluationPanel(!showEvaluationPanel)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${showEvaluationPanel
-                  ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
-                  : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
+                ? 'bg-indigo-100 border-indigo-300 text-indigo-700'
+                : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
                 }`}
             >
               <Settings className="w-4 h-4" />
@@ -195,8 +198,8 @@ export default function ChatbotPage() {
             <button
               onClick={() => setEvaluationEnabled(!evaluationEnabled)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${evaluationEnabled
-                  ? 'bg-green-100 border-green-300 text-green-700'
-                  : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
+                ? 'bg-green-100 border-green-300 text-green-700'
+                : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
                 }`}
             >
               <BarChart3 className="w-4 h-4" />
@@ -217,8 +220,8 @@ export default function ChatbotPage() {
                 <button
                   onClick={() => setEvaluationEnabled(!evaluationEnabled)}
                   className={`px-4 py-2 rounded-lg border transition-colors ${evaluationEnabled
-                      ? 'bg-green-100 border-green-300 text-green-700'
-                      : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-green-100 border-green-300 text-green-700'
+                    : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
                     }`}
                 >
                   {evaluationEnabled ? 'Enabled' : 'Disabled'}
@@ -293,8 +296,8 @@ export default function ChatbotPage() {
                 >
                   <div
                     className={`p-4 rounded-lg ${msg.isUser
-                        ? 'max-w-[50%] text-white rounded-br-sm'
-                        : 'w-full text-black'
+                      ? 'max-w-[50%] text-white rounded-br-sm'
+                      : 'w-full text-black'
                       }`}
                     style={msg.isUser ? { backgroundColor: '#627EEE' } : {}}
                   >
@@ -351,10 +354,11 @@ export default function ChatbotPage() {
       {/* Character Avatar */}
       <div className="fixed bottom-20 right-8">
         <div className="w-50 h-80 relative">
-          <img
+          <Image
             src="/images/luffy.png"
             alt="Luffy Character"
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
         </div>
       </div>
