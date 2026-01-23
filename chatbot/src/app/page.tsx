@@ -19,7 +19,8 @@ export default function ChatbotUI() {
   useEffect(() => {
     const clearContext = async () => {
       try {
-        const response = await fetch('http://localhost:8000/clear', {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${apiUrl}/clear`, {
           method: 'DELETE',
         });
 
@@ -82,7 +83,8 @@ export default function ChatbotUI() {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch('http://localhost:8000/upload', {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${apiUrl}/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -118,8 +120,10 @@ export default function ChatbotUI() {
     setIsUrlProcessing(true);
     setError(null);
 
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
     try {
-      const response = await fetch('http://localhost:8000/url', {
+      const response = await fetch(`${apiUrl}/url`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: url.trim() }),
