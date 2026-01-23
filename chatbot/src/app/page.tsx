@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, FileText, X, Link as LinkIcon } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 export default function ChatbotUI() {
@@ -21,7 +22,7 @@ export default function ChatbotUI() {
         const response = await fetch('http://localhost:8000/clear', {
           method: 'DELETE',
         });
-        
+
         if (!response.ok) {
           const data = await response.json();
           setError(data.detail || 'Failed to clear document context');
@@ -154,11 +155,10 @@ export default function ChatbotUI() {
         <div className="bg-white rounded-2xl border border-slate-200 p-8">
           {/* Upload Area */}
           <div
-            className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 ${
-              dragOver
+            className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 ${dragOver
                 ? 'border-indigo-400 bg-indigo-50'
                 : 'border-slate-300 hover:border-indigo-300 hover:bg-slate-50'
-            }`}
+              }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -169,12 +169,12 @@ export default function ChatbotUI() {
                   <Upload className="w-8 h-8 text-indigo-600" />
                 </div>
               </div>
-              
+
               <div>
                 <p className="text-lg text-slate-600 mb-4">
                   Drag and Drop PDF, or click to select files
                 </p>
-                
+
                 <button
                   onClick={handleUploadClick}
                   className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
@@ -196,9 +196,8 @@ export default function ChatbotUI() {
                     <button
                       onClick={handleUrlSubmit}
                       disabled={isUrlProcessing}
-                      className={`inline-flex items-center px-4 py-2 bg-indigo-500 text-white font-medium rounded-lg hover:bg-indigo-600 transition-colors duration-200 shadow hover:shadow-lg ${
-                        isUrlProcessing ? 'opacity-50 cursor-not-allowed' : ''
-                      }`}
+                      className={`inline-flex items-center px-4 py-2 bg-indigo-500 text-white font-medium rounded-lg hover:bg-indigo-600 transition-colors duration-200 shadow hover:shadow-lg ${isUrlProcessing ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
                     >
                       <LinkIcon className="w-4 h-4 mr-1" />
                       {isUrlProcessing ? 'Processing...' : 'Add URL'}
@@ -242,12 +241,11 @@ export default function ChatbotUI() {
                   </div>
                 ))}
                 {/* Process PDF Button */}
-                <button 
+                <button
                   onClick={handleProcessPDF}
                   disabled={isProcessing}
-                  className={`w-50 bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl text-sm cursor-pointer ${
-                    isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'
-                  }`}
+                  className={`w-50 bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl text-sm cursor-pointer ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'
+                    }`}
                 >
                   {isProcessing ? 'Processing...' : 'Process PDF'}
                 </button>
@@ -270,7 +268,7 @@ export default function ChatbotUI() {
                   </div>
                 </div>
               </div>
-              
+
               <h2 className="text-2xl font-bold text-slate-800 mb-2">
                 No Documents
               </h2>
@@ -283,13 +281,13 @@ export default function ChatbotUI() {
           {/* Character Avatar */}
           <div className="fixed bottom-8 right-8">
             <div className="w-50 h-80 relative mb-4">
-              <img 
-                src="/images/luffy.png" 
-                alt="Luffy Character" 
+              <img
+                src="/images/luffy.png"
+                alt="Luffy Character"
                 className="w-full h-full object-cover"
               />
             </div>
-            
+
           </div>
         </div>
       </div>

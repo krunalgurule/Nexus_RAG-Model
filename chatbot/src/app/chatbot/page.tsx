@@ -160,6 +160,7 @@ export default function ChatbotPage() {
         setMessages(prev => [...prev, { text: data.answer, isUser: false }]);
       }
     } catch (_error) {
+      console.error(_error);
       setMessages(prev => [...prev, {
         text: 'Sorry, I encountered an error. Please try again later.',
         isUser: false
