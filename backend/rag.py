@@ -13,7 +13,7 @@ from agent_communication import simple_bus, coordinator
 
 # Langchain and database imports
 from langchain_groq import ChatGroq
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import chromadb
@@ -101,10 +101,18 @@ def initialize_components():
     """Initialize embeddings, Chroma client, LLM, and evaluator"""
     global embeddings, client, collection, embedding_dim, llm, evaluator
     try:
-        # Initialize Embeddings (HuggingFace - CPU friendly)
-        logger.info("Loading HuggingFace Embeddings (this may take a while first time)...")
-        embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-        logger.info("Embeddings loaded successfully.")
+        # Initialize Embeddings (HuggingFace Inference API - Cloud/Zero RAM)
+        hf_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")
+        if not hf_token:
+            logger.error("HUGGINGFACEHUB_API_TOKEN is missing!")
+            return False
+            
+        logger.info("Using HuggingFace Inference API for Embeddings...")
+        embeddings = HuggingFaceEndpointEmbeddings(
+            model="sentence-transformers/all-MiniLM-L6-v2",
+            huggingfacehub_api_token=hf_token
+        )
+        logger.info("Embeddings API client initialized.")
         client = chromadb.PersistentClient(path="chroma_store")
         
         # Test embedding dimensions
