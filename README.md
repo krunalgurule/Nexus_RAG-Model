@@ -1,130 +1,110 @@
-# Nexus RAG
+# 🧠 Nexus RAG - Intelligent Document Assistant
 
-<div align="center">
+![Nexus RAG Landing Page](./screenshots/landing_page.png)
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python](https://img.shields.io/badge/python-3.10+-3776AB.svg?logo=python&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-15+-000000.svg?logo=next.js&logoColor=white)
-![Groq](https://img.shields.io/badge/AI-Groq-f55036.svg?logo=google-cardboard&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-009688.svg?logo=fastapi&logoColor=white)
-![ChromaDB](https://img.shields.io/badge/Vector%20DB-ChromaDB-orange)
+### [🚀 Live Demo: https://nexus-rag-model.vercel.app](https://nexus-rag-model.vercel.app)
 
-### **Fast. Cloud-Ready. Powerful.**
-**Nexus RAG** is a modular Retrieval-Augmented Generation system designed for cloud deployment. It leverages the **Groq API** for lightning-fast inference (Llama 3 70B) and **HuggingFace Embeddings** for CPU-efficient vector search.
-
-[Features](#key-features) • [Tech Stack](#tech-stack) • [Installation](#installation) • [Usage](#usage)
-
-</div>
+**Nexus RAG** is a modern Retrieval-Augmented Generation (RAG) application that allows users to chat with their documents (PDFs) and webpages. Built with a focus on speed, accuracy, and a premium user experience.
 
 ---
 
-## 🚀 Key Features
+## ✨ Key Features
 
-*   **⚡ Blazing Fast AI**: Powered by **Groq API**, utilizing Llama 3 70B for near-instant responses.
-*   **☁️ Cloud Ready**: Optimized for deployment (Render, Railway, Vercel) by removing heavy local dependencies (Ollama).
-*   **📄 Document Ingestion**: Upload PDF documents to create a searchable knowledge base.
-*   **🌐 Web Scraping**: Ingest and analyze content directly from URLs.
-*   **🧠 Vector Search**: Uses **ChromaDB** and **HuggingFace Embeddings** (CPU-friendly) for semantic search.
-*   **🤖 Modular Agents**: Architecture built with specialized agents for scraping, document processing, and evaluation.
-*   **📊 RAG Evaluation**: Built-in metrics to assess answer correctness, relevance, and groundedness.
+-   **📄 Multi-Format Support**: Upload PDFs or provide URL links to chat with web content.
+-   **🤖 Advanced RAG Engine**: Uses **Groq (Llama-3)** for lightning-fast inference and **HuggingFace** for efficient embeddings.
+-   **📊 Self-Evaluation**: Built-in evaluation agent that checks answers for *Correctness*, *Groundedness*, and *Relevance* in real-time.
+-   **⚡ Cloud Native**: Fully deployed on **Render** (Backend) and **Vercel** (Frontend).
+-   **🎨 Modern UI**: Beautiful, responsive interface built with Next.js and Tailwind CSS.
+
+![Chat Interface](./screenshots/chat_page.png)
+
+---
 
 ## 🛠️ Tech Stack
 
-### Backend
-*   **Python 3.10+** (FastAPI)
-*   **LangChain** (Framework)
-*   **ChromaDB** (Vector Store)
-*   **Groq API** (LLM - Llama 3 70B)
-*   **HuggingFace** (Embeddings)
-*   **PyMuPDF** (PDF Processing)
-*   **Trafilatura** (Web Scraping)
-
 ### Frontend
-*   **Next.js 15+** (React Framework)
-*   **TypeScript**
-*   **Tailwind CSS**
-*   **Lucide React** (Icons)
+-   **Framework**: Next.js 15 (App Router)
+-   **Styling**: Tailwind CSS
+-   **Icons**: Lucide React
+
+### Backend
+-   **API**: FastAPI (Python)
+-   **LLM**: Groq API (Llama-3-70b-versatile)
+-   **Embeddings**: HuggingFace Inference API (all-MiniLM-L6-v2)
+-   **Vector DB**: ChromaDB (Persistent)
+-   **PDF Processing**: PyPDF2
+-   **Web Scraping**: BeautifulSoup4
 
 ---
 
-## 📦 Installation
+## 🚀 Getting Started (Run Locally)
+
+Follow these steps to run Nexus RAG on your machine.
 
 ### Prerequisites
-1.  **Python**: 3.10 or higher.
-2.  **Node.js**: v18 or higher.
-3.  **Groq API Key**: Get one for free at [console.groq.com](https://console.groq.com/).
+-   Node.js & npm
+-   Python 3.10+
+-   Git
 
-### 1. Backend Setup
-Navigate to the backend directory and set up the environment:
+### 1. Clone the Repository
+```bash
+git clone https://github.com/krunalgurule/Nexus_RAG-Model.git
+cd Nexus_RAG-Model
+```
 
-```powershell
+### 2. Backend Setup
+```bash
 cd backend
+# Create virtual environment
 python -m venv venv
-.\venv\Scripts\Activate  # Windows
-# source venv/bin/activate  # Mac/Linux
+# Activate it (Windows)
+.\venv\Scripts\activate
+# Activate it (Mac/Linux)
+source venv/bin/activate
 
+# Install dependencies
 pip install -r requirements.txt
-```
 
-**Create a `.env` file** in the `backend` folder and add your key:
-```env
-GROQ_API_KEY=gsk_your_key_here
-```
+# Create .env file
+# Add your keys:
+# GROQ_API_KEY=your_key_here
+# HUGGINGFACEHUB_API_TOKEN=your_token_here
 
-### 2. Frontend Setup
-Open a new terminal, navigate to the chatbot directory, and install dependencies:
-```powershell
-cd chatbot
-npm install
-```
-
----
-
-## ⚡ Usage
-
-### Start the Application
-
-**Terminal 1 (Backend):**
-```powershell
-cd backend
+# Run Server
 python rag.py
 ```
-*Server runs on `http://0.0.0.0:8000`*
+*Backend will run on `http://localhost:8000`*
 
-**Terminal 2 (Frontend):**
-```powershell
+### 3. Frontend Setup
+```bash
+# Open a new terminal
 cd chatbot
+
+# Install dependencies
+npm install
+
+# Create .env.local file
+# NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# Run Development Server
 npm run dev
 ```
-*UI runs on `http://localhost:3000`*
-
-### How to Use
-1.  Open **[http://localhost:3000](http://localhost:3000)** in your browser.
-2.  **Upload a PDF** using the attachment icon or **Paste a URL** to ingest content.
-3.  Ask questions! The AI will answer based on the context of your uploaded documents.
+*Frontend will run on `http://localhost:3000`*
 
 ---
 
-## 📂 Project Structure
+## 🔒 Environment Variables
 
-```
-nexus-rag/
-├── backend/                # Python FastAPI Backend
-│   ├── rag.py              # Main Server Entry Point
-│   ├── document_agent.py   # PDF Processing Logic
-│   ├── scrape_agent.py     # URL Scraping Logic
-│   ├── evaluator.py        # RAG Evaluation Metrics (Groq Powered)
-│   └── chroma_store/       # Vector Database (Local)
-├── chatbot/                # Next.js Frontend
-│   ├── src/app/            # App Router & Pages
-│   └── package.json        # Frontend Dependencies
-└── README.md               # Project Documentation
-```
+| Variable | Description |
+| :--- | :--- |
+| `GROQ_API_KEY` | API Key from [Groq Console](https://console.groq.com/) |
+| `HUGGINGFACEHUB_API_TOKEN` | Read Token from [HuggingFace](https://huggingface.co/settings/tokens) |
+| `NEXT_PUBLIC_API_URL` | Cloud Backend URL (for Vercel) or localhost (for dev) |
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+---
 
 ## 📄 License
+MIT License. Free to use and modify for personal and commercial projects.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+---
+*Built with ❤️ by Krunal Gurule.*
