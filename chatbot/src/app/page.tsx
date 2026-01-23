@@ -156,8 +156,8 @@ export default function ChatbotUI() {
           {/* Upload Area */}
           <div
             className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 ${dragOver
-                ? 'border-indigo-400 bg-indigo-50'
-                : 'border-slate-300 hover:border-indigo-300 hover:bg-slate-50'
+              ? 'border-indigo-400 bg-indigo-50'
+              : 'border-slate-300 hover:border-indigo-300 hover:bg-slate-50'
               }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -281,10 +281,11 @@ export default function ChatbotUI() {
           {/* Character Avatar */}
           <div className="fixed bottom-8 right-8">
             <div className="w-50 h-80 relative mb-4">
-              <img
+              <Image
                 src="/images/luffy.png"
                 alt="Luffy Character"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             </div>
 
